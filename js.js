@@ -47,7 +47,7 @@ function parseCSV(csvContent) {
 function displayData(dataArray) {
 	const output = document.getElementById('output');
 	output.innerHTML = '<p>Reading results...</p>';
-	
+
 	/*dataArray.forEach(item => {
 		const div = document.createElement('div');
 		div.textContent = `Name: ${item.name}, Points: ${item.points}`;
@@ -81,247 +81,247 @@ function displayData(dataArray) {
 		output.appendChild(heatsTable);
 
 		addResultsToDOM(combinedResults, output);
-		
+
 	})
-	.fail((err) => {
-		output.append("Error reading results");
-	});
+		.fail((err) => {
+			output.append("Error reading results");
+		});
 }
 
 // Function to add results to the DOM
 function addResultsToDOM(results, output) {
 
-    // Create a table to display the results
-    const table = document.createElement('table');
+	// Create a table to display the results
+	const table = document.createElement('table');
 
-    // Create table headers
-    const headerRow = table.createTHead().insertRow(0);
+	// Create table headers
+	const headerRow = table.createTHead().insertRow(0);
 	const posHeader = document.createElement('th');
-    posHeader.textContent = 'Pos';
-    const nameHeader = document.createElement('th');
-    nameHeader.textContent = 'Name';
-    const timeHeader = document.createElement('th');
-    timeHeader.textContent = 'Time';
-    const statusHeader = document.createElement('th');
-    statusHeader.textContent = 'Status';
-    headerRow.appendChild(posHeader);
+	posHeader.textContent = 'Pos';
+	const nameHeader = document.createElement('th');
+	nameHeader.textContent = 'Name';
+	const timeHeader = document.createElement('th');
+	timeHeader.textContent = 'Time';
+	const statusHeader = document.createElement('th');
+	statusHeader.textContent = 'Status';
+	headerRow.appendChild(posHeader);
 	headerRow.appendChild(nameHeader);
-    headerRow.appendChild(timeHeader);
-    headerRow.appendChild(statusHeader);
+	headerRow.appendChild(timeHeader);
+	headerRow.appendChild(statusHeader);
 
-    // Create table body and add results
-    const tbody = table.createTBody();
+	// Create table body and add results
+	const tbody = table.createTBody();
 	for (let i = 0; i < results.length; i++) {
 		let result = results[i];
 
-        const row = tbody.insertRow();
+		const row = tbody.insertRow();
 
 		const posCell = row.insertCell(0);
-        posCell.textContent = result.time > 0 ? i+1 : "";
+		posCell.textContent = result.time > 0 ? i + 1 : "";
 
-        const nameCell = row.insertCell(1);
-        nameCell.textContent = result.name;
+		const nameCell = row.insertCell(1);
+		nameCell.textContent = result.name;
 
-        const timeCell = row.insertCell(2);
-        timeCell.textContent = formatTime(result.time,timeRes);
+		const timeCell = row.insertCell(2);
+		timeCell.textContent = formatTime(result.time, timeRes);
 
-        const statusCell = row.insertCell(3);
-        statusCell.textContent = result.status;
-    }
+		const statusCell = row.insertCell(3);
+		statusCell.textContent = result.status;
+	}
 
-    // Append the table to the container
-    output.appendChild(table);
+	// Append the table to the container
+	output.appendChild(table);
 }
 
 function formatTime(time, timePrecision) {
-    const seconds = Math.floor(time / timePrecision) % 60;
-    const minutes = Math.floor(time / (timePrecision * 60)) % 60;
-    const hours = Math.floor(time / (timePrecision * 3600));
+	const seconds = Math.floor(time / timePrecision) % 60;
+	const minutes = Math.floor(time / (timePrecision * 60)) % 60;
+	const hours = Math.floor(time / (timePrecision * 3600));
 
-    // Add leading zeros if needed
-    const formattedHours = hours < 10 ? `0${hours}` : `${hours}`;
-    const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
-    const formattedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
+	// Add leading zeros if needed
+	const formattedHours = hours < 10 ? `0${hours}` : `${hours}`;
+	const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
+	const formattedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
 
 	if (hours > 0) {
-    	return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+		return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
 	} else {
 		return `${formattedMinutes}:${formattedSeconds}`;
 	}
 }
 
 function createHeatsTable(heats) {
-    const table = document.createElement('table');
-    const headerRow = document.createElement('tr');
+	const table = document.createElement('table');
+	const headerRow = document.createElement('tr');
 
-    // Create table header with heat numbers
-    for (let i = 0; i < heats.length; i++) {
-        const headerCell = document.createElement('th');
-        headerCell.textContent = `Heat ${i + 1}`;
-        headerRow.appendChild(headerCell);
-    }
-    table.appendChild(headerRow);
+	// Create table header with heat numbers
+	for (let i = 0; i < heats.length; i++) {
+		const headerCell = document.createElement('th');
+		headerCell.textContent = `Heat ${i + 1}`;
+		headerRow.appendChild(headerCell);
+	}
+	table.appendChild(headerRow);
 
-    // Determine the maximum number of runners in any heat
-    const maxRunners = Math.max(...heats.map(heat => heat.length));
+	// Determine the maximum number of runners in any heat
+	const maxRunners = Math.max(...heats.map(heat => heat.length));
 
-    // Create rows for each runner
-    for (let i = 0; i < maxRunners; i++) {
-        const row = document.createElement('tr');
+	// Create rows for each runner
+	for (let i = 0; i < maxRunners; i++) {
+		const row = document.createElement('tr');
 
-        // Create cells for each heat
-        for (let j = 0; j < heats.length; j++) {
-            const cell = document.createElement('td');
-            if (i < heats[j].length) {
+		// Create cells for each heat
+		for (let j = 0; j < heats.length; j++) {
+			const cell = document.createElement('td');
+			if (i < heats[j].length) {
 				if (debug) {
-                	cell.textContent = heats[j][i].name + " (" + heats[j][i].Kplace + ", "+heats[j][i].time+" "+heats[j][i].status+", ranki "+heats[j][i].points+")";
+					cell.textContent = heats[j][i].name + " (" + heats[j][i].Kplace + ", " + heats[j][i].time + " " + heats[j][i].status + ", ranki " + heats[j][i].points + ")";
 				} else {
-					cell.textContent = (heats[j][i].time == null ? "*" : "") + heats[j][i].name + (heats[j][i].status != "OK" ? " ("+heats[j][i].status+")" : "");
+					cell.textContent = (heats[j][i].time == null ? "*" : "") + heats[j][i].name + (heats[j][i].status != "OK" ? " (" + heats[j][i].status + ")" : "");
 				}
-            }
-            row.appendChild(cell);
-        }
+			}
+			row.appendChild(cell);
+		}
 
-        table.appendChild(row);
-    }
+		table.appendChild(row);
+	}
 
-    return table;
+	return table;
 }
 
 // Function to order results by time and points
 function orderResults(results) {
-    return results.sort((a, b) => {
-        if (a.time === b.time) {
-            return b.points - a.points;
-        }
+	return results.sort((a, b) => {
+		if (a.time === b.time) {
+			return b.points - a.points;
+		}
 		if (a.status.charAt(0) == "D") return 1;
 		if (b.status.charAt(0) == "D") return -1;
 		if (a.time < 1 || a.time == null) return 1;
 		if (b.time < 1 || b.time == null) return -1;
-        return a.time - b.time;
-    });
+		return a.time - b.time;
+	});
 }
 
 function generateHeats(k1Results, k2Results) {
-    const orderedK1Results = orderResults(k1Results);
-    const orderedK2Results = orderResults(k2Results);
+	const orderedK1Results = orderResults(k1Results);
+	const orderedK2Results = orderResults(k2Results);
 
 	for (let i = 0; i < orderedK1Results.length; i++) {
-		orderedK1Results[i] = {...orderedK1Results[i], Kplace: "K1: "+(i+1)};
+		orderedK1Results[i] = { ...orderedK1Results[i], Kplace: "K1: " + (i + 1) };
 	}
 	for (let i = 0; i < orderedK2Results.length; i++) {
-		orderedK2Results[i] = {...orderedK2Results[i], Kplace: "K2: "+(i+1)};
+		orderedK2Results[i] = { ...orderedK2Results[i], Kplace: "K2: " + (i + 1) };
 	}
 
 	let combinedResults = [];
 	for (let i = 0; i < orderedK1Results.length || i < orderedK2Results.length; i++) {
-        if (i < orderedK1Results.length) {
-            combinedResults.push(orderedK1Results[i]);
-        }
-        if (i < orderedK2Results.length) {
-            combinedResults.push(orderedK2Results[i]);
-        }
-    }
+		if (i < orderedK1Results.length) {
+			combinedResults.push(orderedK1Results[i]);
+		}
+		if (i < orderedK2Results.length) {
+			combinedResults.push(orderedK2Results[i]);
+		}
+	}
 
 	for (let i = 0; i < combinedResults.length; i++) {
-		combinedResults[i] = {...combinedResults[i], cplace: i+1};
+		combinedResults[i] = { ...combinedResults[i], cplace: i + 1 };
 	}
 
 	console.log(combinedResults);
 
-    const heats = [[], [], [], [], [], []];
+	const heats = [[], [], [], [], [], []];
 
-    // Heat 1
-    heats[0].push(combinedResults[0]);
-    heats[0].push(combinedResults[11]);
-    heats[0].push(combinedResults[12]);
-    heats[0].push(combinedResults[23]);
-    heats[0].push(combinedResults[24]);
-    heats[0].push(combinedResults[35]);
+	// Heat 1
+	heats[0].push(combinedResults[0]);
+	heats[0].push(combinedResults[11]);
+	heats[0].push(combinedResults[12]);
+	heats[0].push(combinedResults[23]);
+	heats[0].push(combinedResults[24]);
+	heats[0].push(combinedResults[35]);
 
-    // Heat 2
-    heats[1].push(combinedResults[5]);
-    heats[1].push(combinedResults[6]);
-    heats[1].push(combinedResults[17]);
-    heats[1].push(combinedResults[18]);
-    heats[1].push(combinedResults[29]);
-    heats[1].push(combinedResults[30]);
+	// Heat 2
+	heats[1].push(combinedResults[5]);
+	heats[1].push(combinedResults[6]);
+	heats[1].push(combinedResults[17]);
+	heats[1].push(combinedResults[18]);
+	heats[1].push(combinedResults[29]);
+	heats[1].push(combinedResults[30]);
 
-    // Heat 3
-    heats[2].push(combinedResults[1]);
-    heats[2].push(combinedResults[10]);
-    heats[2].push(combinedResults[13]);
-    heats[2].push(combinedResults[22]);
-    heats[2].push(combinedResults[25]);
-    heats[2].push(combinedResults[34]);
+	// Heat 3
+	heats[2].push(combinedResults[1]);
+	heats[2].push(combinedResults[10]);
+	heats[2].push(combinedResults[13]);
+	heats[2].push(combinedResults[22]);
+	heats[2].push(combinedResults[25]);
+	heats[2].push(combinedResults[34]);
 
-    // Heat 4
-    heats[3].push(combinedResults[4]);
-    heats[3].push(combinedResults[7]);
-    heats[3].push(combinedResults[16]);
-    heats[3].push(combinedResults[19]);
-    heats[3].push(combinedResults[28]);
-    heats[3].push(combinedResults[31]);
+	// Heat 4
+	heats[3].push(combinedResults[4]);
+	heats[3].push(combinedResults[7]);
+	heats[3].push(combinedResults[16]);
+	heats[3].push(combinedResults[19]);
+	heats[3].push(combinedResults[28]);
+	heats[3].push(combinedResults[31]);
 
-    // Heat 5
-    heats[4].push(combinedResults[2]);
-    heats[4].push(combinedResults[9]);
-    heats[4].push(combinedResults[14]);
-    heats[4].push(combinedResults[21]);
-    heats[4].push(combinedResults[26]);
-    heats[4].push(combinedResults[33]);
+	// Heat 5
+	heats[4].push(combinedResults[2]);
+	heats[4].push(combinedResults[9]);
+	heats[4].push(combinedResults[14]);
+	heats[4].push(combinedResults[21]);
+	heats[4].push(combinedResults[26]);
+	heats[4].push(combinedResults[33]);
 
-    // Heat 6
-    heats[5].push(combinedResults[3]);
-    heats[5].push(combinedResults[8]);
-    heats[5].push(combinedResults[15]);
-    heats[5].push(combinedResults[20]);
-    heats[5].push(combinedResults[27]);
-    heats[5].push(combinedResults[32]);
+	// Heat 6
+	heats[5].push(combinedResults[3]);
+	heats[5].push(combinedResults[8]);
+	heats[5].push(combinedResults[15]);
+	heats[5].push(combinedResults[20]);
+	heats[5].push(combinedResults[27]);
+	heats[5].push(combinedResults[32]);
 
-    return [heats, combinedResults];
+	return [heats, combinedResults];
 }
 
 // Function to add points to results based on similar names
 function addPointsToResults(results, points) {
-    return results.map(result => {
-        const matchingPoint = points.find(point => areNamesSimilar(result.name, point.name));
-        if (matchingPoint) {
-            return {
-                ...result,
-                points: matchingPoint.points
-            };
-        }
-        return result;
-    });
+	return results.map(result => {
+		const matchingPoint = points.find(point => areNamesSimilar(result.name, point.name));
+		if (matchingPoint) {
+			return {
+				...result,
+				points: matchingPoint.points
+			};
+		}
+		return result;
+	});
 }
 
 // Function to find the most similar name
 function findMostSimilarName(targetName) {
-    const matches = fuzzyNames.get(targetName);
-    if (matches && matches.length > 0) {
-        // Get the best match (highest score)
-        const bestMatch = matches[0][1];
-        return bestMatch;
-    }
-	console.log("No match: "+targetName);
-    return null; // No match found
+	const matches = fuzzyNames.get(targetName);
+	if (matches && matches.length > 0) {
+		// Get the best match (highest score)
+		const bestMatch = matches[0][1];
+		return bestMatch;
+	}
+	console.log("No match: " + targetName);
+	return null; // No match found
 }
 
 function addPointsToResults(results, points) {
-    return results.map(result => {
-        const matchingPoint = points.find(point => point.name === findMostSimilarName(result.name));
-        if (matchingPoint) {
-            return {
-                ...result,
-                points: matchingPoint.points
-            };
-        }
-        return {
+	return results.map(result => {
+		const matchingPoint = points.find(point => point.name === findMostSimilarName(result.name));
+		if (matchingPoint) {
+			return {
+				...result,
+				points: matchingPoint.points
+			};
+		}
+		return {
 			...result,
 			points: 0
 		};
-    });
+	});
 }
 
 function loadResults() {
@@ -331,12 +331,12 @@ function loadResults() {
 	let classidK2 = -1;
 	let raceno = 1;
 
-	const online_event_url = online_domain+"/tulokset-new/online/online_"+ol_eventid+"_event.json&a="+Date.now();
-	const online_competitors_url = online_domain+"/tulokset-new/online/online_"+ol_eventid+"_competitors.json&a="+Date.now();
-	
+	const online_event_url = online_domain + "/tulokset-new/online/online_" + ol_eventid + "_event.json&a=" + Date.now();
+	const online_competitors_url = online_domain + "/tulokset-new/online/online_" + ol_eventid + "_competitors.json&a=" + Date.now();
+
 	// fetch event.json, competitors.json
 	let onlinepromise = $.get(online_event_url, "", null, 'json');
-	
+
 
 	return $.when(onlinepromise).then((eventret) => {
 
@@ -369,13 +369,13 @@ function loadResults() {
 				statuscol = i;
 			}
 		}
-		
+
 		// find classid
 		for (let c_id in event.Classes) {
-			if (event.Classes[c_id].ClassNameShort == classname+"K1") {
+			if (event.Classes[c_id].ClassNameShort == classname + "K1") {
 				classidK1 = event.Classes[c_id].ID;
 			}
-			if (event.Classes[c_id].ClassNameShort == classname+"K2") {
+			if (event.Classes[c_id].ClassNameShort == classname + "K2") {
 				classidK2 = event.Classes[c_id].ID;
 			}
 		}
@@ -386,14 +386,14 @@ function loadResults() {
 
 		// get results
 		if (!allowfollowall) {
-			promises.push($.get(online_domain+"/tulokset-new/online/online_"+ol_eventid+"_results_"+classidK1+"_"+raceno+".json&a="+Date.now(), "", null, 'json'));
-			promises.push($.get(online_domain+"/tulokset-new/online/online_"+ol_eventid+"_results_"+classidK2+"_"+raceno+".json&a="+Date.now(), "", null, 'json'));
+			promises.push($.get(online_domain + "/tulokset-new/online/online_" + ol_eventid + "_results_" + classidK1 + "_" + raceno + ".json&a=" + Date.now(), "", null, 'json'));
+			promises.push($.get(online_domain + "/tulokset-new/online/online_" + ol_eventid + "_results_" + classidK2 + "_" + raceno + ".json&a=" + Date.now(), "", null, 'json'));
 		} else {
-			promises.push($.get(online_domain+"/tulokset-new/online/online_"+ol_eventid+"_results.json&a="+Date.now(), "", null, 'json'));
+			promises.push($.get(online_domain + "/tulokset-new/online/online_" + ol_eventid + "_results.json&a=" + Date.now(), "", null, 'json'));
 		}
 
 		return $.when(...promises).then((competitorsret, resultsret1, resultsret2) => {
-		
+
 			let competitors = competitorsret[0].Competitors;
 			console.log(competitors);
 			let results1 = resultsret1[0];
@@ -467,12 +467,12 @@ function loadResults() {
 				// loop through all competitors to match ids
 				for (let i in competitors) {
 					if (ol_competitor_ids.includes(competitors[i][0])) {
-						console.log("adding name: "+competitors[i][8] + " " +competitors[i][7]);
-						ol_competitor_names[competitors[i][0]] = competitors[i][8] + " " +competitors[i][7];
+						console.log("adding name: " + competitors[i][8] + " " + competitors[i][7]);
+						ol_competitor_names[competitors[i][0]] = competitors[i][8] + " " + competitors[i][7];
 					}
 				}
 			} else {
-				console.log("Eventtype",eventtype);
+				console.log("Eventtype", eventtype);
 			}
 
 			// return results
@@ -480,11 +480,11 @@ function loadResults() {
 			let resultsK2 = [];
 
 			resulttimesK1.forEach((time, id) => {
-				resultsK1.push({ name: ol_competitor_names[id], time: time, status: statusesK1[id]});
+				resultsK1.push({ name: ol_competitor_names[id], time: time, status: statusesK1[id] });
 			});
 
 			resulttimesK2.forEach((time, id) => {
-				resultsK2.push({ name: ol_competitor_names[id], time: time, status: statusesK2[id]});
+				resultsK2.push({ name: ol_competitor_names[id], time: time, status: statusesK2[id] });
 			});
 
 			return [resultsK1, resultsK2];
