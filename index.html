@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<head>
+    <title>Knockout erät</title>
+</head>
+<body>
+    <label for="category">Select Category:</label>
+    <select id="category">
+        <option value="H21">H21</option>
+        <option value="D21">D21</option>
+		<option value="H18">H18</option>
+		<option value="D18">D18</option>
+    </select>
+	<input type="checkbox" id="debug" /> Extra info
+    <input type="button" value="Load results" id="loadCSVButton">
+    <div id="output"></div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fuzzyset.js/0.0.3/fuzzyset.min.js"></script>
+	<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
+    <script src="js.js"></script>
+</body>
+</html>
