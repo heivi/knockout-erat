@@ -1,5 +1,5 @@
 // Online event id kisalle
-const ol_eventid = "2023_tamperesprint";
+const ol_eventid = "2024_hogsprint";
 const online_domain = "./corsproxy.php?csurl=https://online4.tulospalvelu.fi";
 
 // Create a fuzzy set for names from the CSV data
@@ -65,14 +65,16 @@ function displayData(dataArray) {
 
 		let resultsK1 = results[0];
 		let resultsK2 = results[1];
+		let resultsK3 = results[2];
 
 		// combine points
 		const resultsWithPointsK1 = addPointsToResults(resultsK1, dataArray);
 		const resultsWithPointsK2 = addPointsToResults(resultsK2, dataArray);
+		const resultsWithPointsK3 = addPointsToResults(resultsK3, dataArray);
 
-		let heatsresults = generateHeats(resultsWithPointsK1, resultsWithPointsK2);
+		let heatsresults = generateHeats(resultsWithPointsK1, resultsWithPointsK2, resultsWithPointsK3);
 		let heats = heatsresults[0];
-		let combinedResults = heatsresults[1];
+		//let combinedResults = heatsresults[1];
 		console.log(heats);
 
 		// Usage example
@@ -80,7 +82,7 @@ function displayData(dataArray) {
 		console.log(heatsTable);
 		output.appendChild(heatsTable);
 
-		addResultsToDOM(combinedResults, output);
+		//addResultsToDOM(combinedResults, output);
 
 	})
 		.fail((err) => {
@@ -202,9 +204,10 @@ function orderResults(results) {
 	});
 }
 
-function generateHeats(k1Results, k2Results) {
+function generateHeats(k1Results, k2Results, k3Results) {
 	const orderedK1Results = orderResults(k1Results);
 	const orderedK2Results = orderResults(k2Results);
+	const orderedK3Results = orderResults(k3Results);
 
 	for (let i = 0; i < orderedK1Results.length; i++) {
 		orderedK1Results[i] = { ...orderedK1Results[i], Kplace: "K1: " + (i + 1) };
@@ -212,7 +215,11 @@ function generateHeats(k1Results, k2Results) {
 	for (let i = 0; i < orderedK2Results.length; i++) {
 		orderedK2Results[i] = { ...orderedK2Results[i], Kplace: "K2: " + (i + 1) };
 	}
+	for (let i = 0; i < orderedK3Results.length; i++) {
+		orderedK3Results[i] = { ...orderedK3Results[i], Kplace: "K3: " + (i + 1) };
+	}
 
+	/*
 	let combinedResults = [];
 	for (let i = 0; i < orderedK1Results.length || i < orderedK2Results.length; i++) {
 		if (i < orderedK1Results.length) {
@@ -228,58 +235,59 @@ function generateHeats(k1Results, k2Results) {
 	}
 
 	console.log(combinedResults);
+	*/
 
 	const heats = [[], [], [], [], [], []];
 
 	// Heat 1
-	heats[0].push(combinedResults[0]);
-	heats[0].push(combinedResults[11]);
-	heats[0].push(combinedResults[12]);
-	heats[0].push(combinedResults[23]);
-	heats[0].push(combinedResults[24]);
-	heats[0].push(combinedResults[35]);
+	heats[0].push(orderedK3Results[0]);
+	heats[0].push(orderedK1Results[3]);
+	heats[0].push(orderedK2Results[4]);
+	heats[0].push(orderedK3Results[7]);
+	heats[0].push(orderedK1Results[8]);
+	heats[0].push(orderedK2Results[11]);
 
 	// Heat 2
-	heats[1].push(combinedResults[5]);
-	heats[1].push(combinedResults[6]);
-	heats[1].push(combinedResults[17]);
-	heats[1].push(combinedResults[18]);
-	heats[1].push(combinedResults[29]);
-	heats[1].push(combinedResults[30]);
+	heats[1].push(orderedK2Results[1]);
+	heats[1].push(orderedK3Results[2]);
+	heats[1].push(orderedK1Results[5]);
+	heats[1].push(orderedK2Results[6]);
+	heats[1].push(orderedK3Results[9]);
+	heats[1].push(orderedK1Results[10]);
 
 	// Heat 3
-	heats[2].push(combinedResults[1]);
-	heats[2].push(combinedResults[10]);
-	heats[2].push(combinedResults[13]);
-	heats[2].push(combinedResults[22]);
-	heats[2].push(combinedResults[25]);
-	heats[2].push(combinedResults[34]);
+	heats[2].push(orderedK1Results[0]);
+	heats[2].push(orderedK2Results[3]);
+	heats[2].push(orderedK3Results[4]);
+	heats[2].push(orderedK1Results[7]);
+	heats[2].push(orderedK2Results[8]);
+	heats[2].push(orderedK3Results[11]);
 
 	// Heat 4
-	heats[3].push(combinedResults[4]);
-	heats[3].push(combinedResults[7]);
-	heats[3].push(combinedResults[16]);
-	heats[3].push(combinedResults[19]);
-	heats[3].push(combinedResults[28]);
-	heats[3].push(combinedResults[31]);
+	heats[3].push(orderedK3Results[1]);
+	heats[3].push(orderedK1Results[2]);
+	heats[3].push(orderedK2Results[5]);
+	heats[3].push(orderedK3Results[6]);
+	heats[3].push(orderedK1Results[9]);
+	heats[3].push(orderedK2Results[10]);
 
 	// Heat 5
-	heats[4].push(combinedResults[2]);
-	heats[4].push(combinedResults[9]);
-	heats[4].push(combinedResults[14]);
-	heats[4].push(combinedResults[21]);
-	heats[4].push(combinedResults[26]);
-	heats[4].push(combinedResults[33]);
+	heats[4].push(orderedK2Results[0]);
+	heats[4].push(orderedK3Results[3]);
+	heats[4].push(orderedK1Results[4]);
+	heats[4].push(orderedK2Results[7]);
+	heats[4].push(orderedK3Results[8]);
+	heats[4].push(orderedK1Results[11]);
 
 	// Heat 6
-	heats[5].push(combinedResults[3]);
-	heats[5].push(combinedResults[8]);
-	heats[5].push(combinedResults[15]);
-	heats[5].push(combinedResults[20]);
-	heats[5].push(combinedResults[27]);
-	heats[5].push(combinedResults[32]);
+	heats[5].push(orderedK1Results[1]);
+	heats[5].push(orderedK2Results[2]);
+	heats[5].push(orderedK3Results[5]);
+	heats[5].push(orderedK1Results[6]);
+	heats[5].push(orderedK2Results[9]);
+	heats[5].push(orderedK3Results[10]);
 
-	return [heats, combinedResults];
+	return [heats];
 }
 
 // Function to add points to results based on similar names
@@ -326,9 +334,10 @@ function addPointsToResults(results, points) {
 
 function loadResults() {
 
-	let classname = selectedCategory || "H21";
+	let classname = selectedCategory || "M21";
 	let classidK1 = -1;
 	let classidK2 = -1;
+	let classidK3 = -1;
 	let raceno = 1;
 
 	const online_event_url = online_domain + "/tulokset-new/online/online_" + ol_eventid + "_event.json&a=" + Date.now();
@@ -372,11 +381,14 @@ function loadResults() {
 
 		// find classid
 		for (let c_id in event.Classes) {
-			if (event.Classes[c_id].ClassNameShort == classname + "K1") {
+			if (event.Classes[c_id].ClassNameShort == classname + "K1" || event.Classes[c_id].ClassNameShort == classname + "Q1") {
 				classidK1 = event.Classes[c_id].ID;
 			}
-			if (event.Classes[c_id].ClassNameShort == classname + "K2") {
+			if (event.Classes[c_id].ClassNameShort == classname + "K2" || event.Classes[c_id].ClassNameShort == classname + "Q2") {
 				classidK2 = event.Classes[c_id].ID;
+			}
+			if (event.Classes[c_id].ClassNameShort == classname + "K3" || event.Classes[c_id].ClassNameShort == classname + "Q3") {
+				classidK3 = event.Classes[c_id].ID;
 			}
 		}
 
@@ -388,21 +400,25 @@ function loadResults() {
 		if (!allowfollowall) {
 			promises.push($.get(online_domain + "/tulokset-new/online/online_" + ol_eventid + "_results_" + classidK1 + "_" + raceno + ".json&a=" + Date.now(), "", null, 'json'));
 			promises.push($.get(online_domain + "/tulokset-new/online/online_" + ol_eventid + "_results_" + classidK2 + "_" + raceno + ".json&a=" + Date.now(), "", null, 'json'));
+			promises.push($.get(online_domain + "/tulokset-new/online/online_" + ol_eventid + "_results_" + classidK3 + "_" + raceno + ".json&a=" + Date.now(), "", null, 'json'));
 		} else {
 			promises.push($.get(online_domain + "/tulokset-new/online/online_" + ol_eventid + "_results.json&a=" + Date.now(), "", null, 'json'));
 		}
 
-		return $.when(...promises).then((competitorsret, resultsret1, resultsret2) => {
+		return $.when(...promises).then((competitorsret, resultsret1, resultsret2, resultsret3) => {
 
 			let competitors = competitorsret[0].Competitors;
 			console.log(competitors);
 			let results1 = resultsret1[0];
 			let results2 = [];
+			let results3 = [];
 			if (!allowfollowall) {
 				results2 = resultsret2[0];
+				results3 = resultsret3[0];
 			}
 			console.log(results1);
 			console.log(results2);
+			console.log(results3);
 
 			let ol_competitor_ids = [];
 			let ol_competitors = [];
@@ -410,10 +426,13 @@ function loadResults() {
 			let ol_competitor_reverse = {};
 			let starttimesK1 = [];
 			let starttimesK2 = [];
+			let starttimesK3 = [];
 			let resulttimesK1 = [];
 			let resulttimesK2 = [];
+			let resulttimesK3 = [];
 			let statusesK1 = [];
 			let statusesK2 = [];
+			let statusesK3 = [];
 
 			if (allowfollowall) {
 				let results = results1;
@@ -443,6 +462,18 @@ function loadResults() {
 						}
 						//break;
 					}
+					if (results.Results[i].ClassID == classidK3 && (eventtype != "Relay" || results.Results[i].RaceNo == raceno)) {
+						let classresults = results.Results[i].Results;
+						// go through results to see who's in the class
+						for (let i in classresults) {
+							let result = classresults[i];
+							ol_competitor_ids.push(result[0]);
+							starttimesK3[result[0]] = result[starttimecol];
+							resulttimesK3[result[0]] = result[resultscol][0][1];
+							statusesK3[result[0]] = result[statuscol];
+						}
+						//break;
+					}
 				}
 			} else {
 				// go through results to see who's in the class
@@ -461,6 +492,14 @@ function loadResults() {
 					resulttimesK2[result[0]] = result[resultscol][0][1];
 					statusesK2[result[0]] = result[statuscol];
 				}
+
+				for (let i in results3.Results) {
+					let result = results3.Results[i];
+					ol_competitor_ids.push(result[0]);
+					starttimesK3[result[0]] = result[starttimecol];
+					resulttimesK3[result[0]] = result[resultscol][0][1];
+					statusesK3[result[0]] = result[statuscol];
+				}
 			}
 
 			if (eventtype == "Individual" || eventtype == "MultiRace") {
@@ -478,6 +517,7 @@ function loadResults() {
 			// return results
 			let resultsK1 = [];
 			let resultsK2 = [];
+			let resultsK3 = [];
 
 			resulttimesK1.forEach((time, id) => {
 				resultsK1.push({ name: ol_competitor_names[id], time: time, status: statusesK1[id] });
@@ -487,7 +527,11 @@ function loadResults() {
 				resultsK2.push({ name: ol_competitor_names[id], time: time, status: statusesK2[id] });
 			});
 
-			return [resultsK1, resultsK2];
+			resulttimesK3.forEach((time, id) => {
+				resultsK3.push({ name: ol_competitor_names[id], time: time, status: statusesK3[id] });
+			});
+
+			return [resultsK1, resultsK2, resultsK3];
 
 		});
 	});
