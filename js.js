@@ -310,7 +310,7 @@ function findMostSimilarName(targetName) {
 	if (matches && matches.length > 0) {
 		// Get the best match (highest score)
 		const bestMatch = matches[0][1];
-		return bestMatch;
+		return matches[0][0] > 0.4 ? bestMatch : null;
 	}
 	console.log("No match: " + targetName);
 	return null; // No match found
